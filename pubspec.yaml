@@ -3,7 +3,7 @@ description: "A Flutter package for picking colors from an image with zoom funct
 homepage: https://github.com/BhagyeshAgiles/zoom_color_picker
 repository: https://github.com/BhagyeshAgiles/zoom_color_picker
 
-version: 1.0.0+1 # Version and build number
+version: 1.0.1 # Version and build number
 
 environment:
   sdk: ^3.5.3

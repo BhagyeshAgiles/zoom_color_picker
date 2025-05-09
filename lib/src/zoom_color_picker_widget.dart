@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:zoom_color_picker/src/zoom_color_picker_controller.dart';
 
 /// A widget that displays an image, allows users to zoom, and pick colors by tapping on the image.
 class ZoomColorPicker extends StatelessWidget {
-  const ZoomColorPicker({super.key});
+  // Callbacks to return the selected color and image
+  final void Function(Color color)? onColorPicked;
+  final void Function(XFile imageFile)? onImagePicked;
+
+  const ZoomColorPicker({
+    super.key,
+    this.onColorPicked,
+    this.onImagePicked,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +41,7 @@ class ZoomColorPicker extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: controller.selectedColor.value,
                         shape: BoxShape.circle,
-                        border: Border.all(
-                            color: controller.selectedColor.value ??
-                                Colors.transparent,
-                            width: 1),
+                        border: Border.all(color: controller.selectedColor.value ?? Colors.transparent, width: 1),
                       ),
                     ),
                   ],
@@ -45,8 +51,7 @@ class ZoomColorPicker extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: GestureDetector(
-              onTap: controller
-                  .pickImageAndProcess, // Open the image picker when tapped
+              onTap: controller.pickImageAndProcess, // Open the image picker when tapped
               child: const Icon(Icons.image),
             ),
           )
@@ -64,24 +69,38 @@ class ZoomColorPicker extends StatelessWidget {
                       alignment: Alignment.center,
                       padding: const EdgeInsets.all(8.0),
                       child: GestureDetector(
-                        onTapDown:
-                            controller.onTapDown, // Detect tap on the image
+                        onTapDown: controller.onTapDown, // Detect tap on the image
                         child: InteractiveViewer(
                           child: Image.memory(
                             controller.imageBytes.value!,
                             key: controller.imageKey,
-                            fit: BoxFit
-                                .contain, // Make sure the image is displayed with zoom functionality
+                            fit: BoxFit.contain, // Make sure the image is displayed with zoom functionality
                           ),
                         ),
                       ),
                     ),
                   )
-                : const Center(
-                    child: Text(
-                        "No image selected")); // Show a message when no image is selected
+                : const Center(child: Text("No image selected")); // Show a message when no image is selected
           }),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // If the color was picked, return the color to the parent
+          if (controller.selectedColor.value != null) {
+            onColorPicked?.call(controller.selectedColor.value!);
+          }
+
+          // If an image was picked, return the image to the parent
+          if (controller.imageBytes.value != null) {
+            final imageFile = XFile.fromData(controller.imageBytes.value!);
+            onImagePicked?.call(imageFile);
+          }
+
+          // Pop the screen
+          Navigator.pop(context);
+        },
+        child: const Icon(Icons.check),
       ),
     );
   }
