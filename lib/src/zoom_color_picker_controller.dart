@@ -11,11 +11,15 @@ import 'dart:io';
 class ZoomColorPickerController extends GetxController {
   // Observable state variables using GetX
   Rx<ui.Image?> uiImage = Rx<ui.Image?>(null); // To hold the raw image data
-  Rx<Uint8List?> imageBytes = Rx<Uint8List?>(null); // To hold the image bytes for display
-  Rx<Color?> selectedColor = Rx<Color?>(null); // To store the selected color at the tapped position
-  Rx<Offset?> tapPosition = Rx<Offset?>(null); // To store the position of the tap on the image
+  Rx<Uint8List?> imageBytes =
+      Rx<Uint8List?>(null); // To hold the image bytes for display
+  Rx<Color?> selectedColor =
+      Rx<Color?>(null); // To store the selected color at the tapped position
+  Rx<Offset?> tapPosition =
+      Rx<Offset?>(null); // To store the position of the tap on the image
 
-  final GlobalKey imageKey = GlobalKey(); // Key for the image widget to calculate the tap position
+  final GlobalKey imageKey =
+      GlobalKey(); // Key for the image widget to calculate the tap position
 
   /// Loads an image and its bytes.
   ///
@@ -31,7 +35,8 @@ class ZoomColorPickerController extends GetxController {
     uiImage.value = await completer.future; // Set the loaded raw image data
     stream.removeListener(listener);
 
-    imageBytes.value = await file.readAsBytes(); // Set the loaded bytes for display
+    imageBytes.value =
+        await file.readAsBytes(); // Set the loaded bytes for display
   }
 
   /// Picks an image from the gallery and processes it.
@@ -39,7 +44,9 @@ class ZoomColorPickerController extends GetxController {
   /// This function uses the image picker to select an image and then loads the image and its bytes.
   Future<void> pickImageAndProcess() async {
     final picker = ImagePicker();
-    final picked = await picker.pickImage(source: ImageSource.gallery); // Open the gallery for the user to pick an image
+    final picked = await picker.pickImage(
+        source: ImageSource
+            .gallery); // Open the gallery for the user to pick an image
     if (picked != null) {
       final file = File(picked.path); // Get the file from the picked image
       final provider = FileImage(file); // Create an image provider for the file
@@ -53,16 +60,22 @@ class ZoomColorPickerController extends GetxController {
   Future<void> onTapDown(TapDownDetails details) async {
     if (uiImage.value == null) return;
     final box = imageKey.currentContext!.findRenderObject() as RenderBox;
-    final localPos = box.globalToLocal(details.globalPosition); // Convert global position to local position
+    final localPos = box.globalToLocal(
+        details.globalPosition); // Convert global position to local position
 
-    final pixelX = (localPos.dx * uiImage.value!.width / box.size.width).toInt();
-    final pixelY = (localPos.dy * uiImage.value!.height / box.size.height).toInt();
+    final pixelX =
+        (localPos.dx * uiImage.value!.width / box.size.width).toInt();
+    final pixelY =
+        (localPos.dy * uiImage.value!.height / box.size.height).toInt();
 
-    final byteData = await uiImage.value!.toByteData(format: ui.ImageByteFormat.rawRgba); // Get raw pixel data
+    final byteData = await uiImage.value!
+        .toByteData(format: ui.ImageByteFormat.rawRgba); // Get raw pixel data
     if (byteData == null) return;
 
-    final data = byteData.buffer.asUint8List(); // Convert the byte data into a list
-    final pixelIndex = (pixelY * uiImage.value!.width + pixelX) * 4; // Calculate the pixel index
+    final data =
+        byteData.buffer.asUint8List(); // Convert the byte data into a list
+    final pixelIndex = (pixelY * uiImage.value!.width + pixelX) *
+        4; // Calculate the pixel index
 
     final r = data[pixelIndex]; // Red value
     final g = data[pixelIndex + 1]; // Green value

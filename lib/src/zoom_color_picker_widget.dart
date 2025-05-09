@@ -32,7 +32,10 @@ class ZoomColorPicker extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: controller.selectedColor.value,
                         shape: BoxShape.circle,
-                        border: Border.all(color: controller.selectedColor.value ?? Colors.transparent, width: 1),
+                        border: Border.all(
+                            color: controller.selectedColor.value ??
+                                Colors.transparent,
+                            width: 1),
                       ),
                     ),
                   ],
@@ -42,7 +45,8 @@ class ZoomColorPicker extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: GestureDetector(
-              onTap: controller.pickImageAndProcess, // Open the image picker when tapped
+              onTap: controller
+                  .pickImageAndProcess, // Open the image picker when tapped
               child: const Icon(Icons.image),
             ),
           )
@@ -60,18 +64,22 @@ class ZoomColorPicker extends StatelessWidget {
                       alignment: Alignment.center,
                       padding: const EdgeInsets.all(8.0),
                       child: GestureDetector(
-                        onTapDown: controller.onTapDown, // Detect tap on the image
+                        onTapDown:
+                            controller.onTapDown, // Detect tap on the image
                         child: InteractiveViewer(
                           child: Image.memory(
                             controller.imageBytes.value!,
                             key: controller.imageKey,
-                            fit: BoxFit.contain, // Make sure the image is displayed with zoom functionality
+                            fit: BoxFit
+                                .contain, // Make sure the image is displayed with zoom functionality
                           ),
                         ),
                       ),
                     ),
                   )
-                : const Center(child: Text("No image selected")); // Show a message when no image is selected
+                : const Center(
+                    child: Text(
+                        "No image selected")); // Show a message when no image is selected
           }),
         ],
       ),
