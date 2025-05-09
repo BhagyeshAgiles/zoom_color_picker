@@ -1,0 +1,44 @@
+name: zoom_color_picker
+description: "A Flutter package for picking colors from an image with zoom functionality."
+homepage: https://github.com/BhagyeshAgiles/zoom_color_picker
+repository: https://github.com/BhagyeshAgiles/zoom_color_picker
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1 # Version and build number
+
+environment:
+  sdk: ^3.5.3
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Add any other dependencies you need for your package
+  cupertino_icons: ^1.0.8 # Optional: for iOS style icons
+  image_picker: ^1.1.2 # For picking images from the gallery or camera
+  get: ^4.6.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # Lints help you follow good coding practices
+  flutter_lints: ^4.0.0
+
+flutter:
+  # Enables Material Design and includes related icons
+  uses-material-design: true
+
+  # If you want to include image assets, you can specify them here.
+  # Uncomment and add the asset paths as needed:
+  # assets:
+  #   - assets/images/
+
+  # If you want to add custom fonts, you can specify them here.
+  # Uncomment and customize as needed:
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
