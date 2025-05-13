@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:zoom_color_picker/color_helper/extension.dart';
 
 import 'package:zoom_color_picker/src/zoom_color_picker_controller.dart';
 
 /// A widget that displays an image, allows users to zoom, and pick colors by tapping on the image.
 class ZoomColorPicker extends StatelessWidget {
   // Callbacks to return the selected color and image
-  final void Function(Color color)? onColorPicked;
-  final void Function(XFile imageFile)? onImagePicked;
+  final void Function(Color color, String colorName)? onColorPicked;
+  final void Function(String imageFilePath)? onImagePicked;
 
   const ZoomColorPicker({
     super.key,
@@ -88,17 +88,16 @@ class ZoomColorPicker extends StatelessWidget {
         onPressed: () {
           // If the color was picked, return the color to the parent
           if (controller.selectedColor.value != null) {
-            onColorPicked?.call(controller.selectedColor.value!);
+            onColorPicked?.call(controller.selectedColor.value!, controller.selectedColor.value?.colorName ?? "");
           }
 
-          // If an image was picked, return the image to the parent
+          // If an image was picked, return the image path to the parent
           if (controller.imageBytes.value != null) {
-            final imageFile = XFile.fromData(controller.imageBytes.value!);
-            onImagePicked?.call(imageFile);
+            onImagePicked?.call(controller.imagePath.value);
           }
 
           // Pop the screen
-          Navigator.pop(context);
+          //Navigator.pop(context);
         },
         child: const Icon(Icons.check),
       ),
